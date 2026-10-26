@@ -132,6 +132,7 @@ else { Write-Host '[注意] vrm_inspect.exe が未ビルドのため入れませ
 Copy-To (Join-Path $Repo 'README.md') 'README.md'
 Copy-To (Join-Path $Repo 'docs\INSTALL.md') 'docs\INSTALL.md'
 Copy-To (Join-Path $Repo 'docs\CREDITS.md') 'docs\CREDITS.md'
+Copy-To (Join-Path $Repo 'LICENSE') 'LICENSE.txt'
 Copy-To (Join-Path $Repo 'third_party\cgltf\LICENSE') 'licenses\cgltf.txt'
 Copy-To (Join-Path $Repo 'third_party\ue4ss\LICENSE') 'licenses\UE4SS.txt'
 Copy-To (Join-Path $Repo 'third_party\ue4ss\README.md') 'licenses\UE4SS_bundle_README.md'

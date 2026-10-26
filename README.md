@@ -69,12 +69,11 @@ Japanese Ramen Simulator(Steam AppID 4968640)のプレイヤーキャラクタ�
 
 ## 注意
 
-- 非公式 MOD です。ゲームの開発元とは関係ありません。利用は自己責任でお願いします。
+- 非公式 MOD です。ゲームの開発元とは関係ありません。
 - ゲームのアップデートで動かなくなることがあります。MOD は失敗を検出すると、元の見た目に戻して停止します。
 - ウイルス対策ソフトが `dwmapi.dll`(UE4SS をゲームに読み込ませるファイル)に警告を出すことがあります。
-- VRM モデルの利用は、各モデルの利用条件(VRM の meta に記載)に従ってください。
-  マルチプレイで相手に見せるには相手も同じファイルを持っている必要があります。モデルの受け渡しは利用条件の範囲で各自行ってください。
-- 不具合の報告には、ゲームの `RealRamenSimulator\Binaries\Win64\ue4ss\UE4SS.log` を添えてください(行頭が `[RamenVRM]` の記録)。
+- VRM モデルにはそれぞれ作者の利用条件があります(VRM の meta に記載。`tools\vrm_inspect.exe` で確認できます)。
+  マルチプレイで相手に見せるには、相手も同じファイルを持っている必要があります。
 
 ## 開発者向け
 
@@ -91,13 +90,20 @@ tools/vrm_inspect  VRM の中身・利用許諾の表示、OBJ 書き出し、�
 mod/RamenVRM       UE4SS の C++ MOD(ゲームとの接点だけを持つ)
 ue/                専用マテリアル: UE 5.7 のコンテンツ用プロジェクトと、生成・pak 化のスクリプト
 scripts/           install.bat / uninstall.bat / ramen_vrm_setup.ps1 / make_package.ps1
-third_party/       cgltf(MIT)、同梱する UE4SS の情報とライセンス(MIT ほか)
+third_party/       同梱するソフトウェア(cgltf、UE4SS)の情報とライセンス文
 ```
 
 ビルドには Visual Studio 2022 以降・CMake・Rust(UE4SS 用)・UE 5.7(専用マテリアル用)が必要です。
 UE4SS のソースは同梱する UE4SS.dll と同じコミットのものを `external/` に取得します(Epic Games と GitHub のアカウント連携が必要)。
 
-## ライセンス・クレジット
+## ライセンス
 
-同梱している第三者のソフトウェア(UE4SS、cgltf ほか)のライセンスは、配布物の `licenses\` と
-[docs/CREDITS.md](docs/CREDITS.md) を参照してください。
+この MOD のために書いたもの(ソースコード、スクリプト、専用マテリアル、ドキュメント)は
+**[CC0 1.0](LICENSE)** で提供します。権利は主張しません。改変・再配布・商用利用を含めて自由に使ってください(クレジット表記も不要です)。
+
+同梱しているソフトウェアには、それぞれのライセンスが適用されます。
+
+- [UE4SS](https://github.com/UE4SS-RE/RE-UE4SS)(MIT)と、それに組み込まれたライブラリ(MIT / BSD / zlib / Apache-2.0)
+- [cgltf](https://github.com/jkuhlmann/cgltf)(MIT)
+
+ライセンス文は配布物の `licenses\` に、一覧は [docs/CREDITS.md](docs/CREDITS.md) にあります。
