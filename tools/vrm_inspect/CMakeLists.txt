@@ -1,0 +1,5 @@
+add_executable(vrm_inspect main.cpp)
+target_link_libraries(vrm_inspect PRIVATE rvrm_core)
+if(WIN32)
+  target_link_libraries(vrm_inspect PRIVATE shell32)
+endif()

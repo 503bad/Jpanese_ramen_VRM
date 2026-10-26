@@ -1,0 +1,15 @@
+build/
+out/
+.vs/
+*.user
+dist/
+third_party/ue4ss/*.zip
+research/
+external/
+build_mod/
+ue/RamenVRMContent/Saved/
+ue/RamenVRMContent/Intermediate/
+ue/RamenVRMContent/DerivedDataCache/
+ue/RamenVRMContent/Content/
+ue/build/
+ue/*.log
