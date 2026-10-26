@@ -4,7 +4,10 @@
 
 - Visual Studio 2022 以降(C++ によるデスクトップ開発。開発環境では VS 18 / 2026 Community で確認)
 - CMake 3.20 以降
-- (Phase 2 以降)UE4SS の C++ MOD 開発環境 — 下記「MOD 本体」を参照
+- MOD 本体: Rust と UE4SS のソース — 下記「MOD 本体」を参照
+- 専用マテリアル: Unreal Engine 5.7(Epic Games Launcher。開発環境では 5.7.1)— 下記「専用マテリアル」を参照
+
+全体の流れ: core(任意)→ MOD 本体 → 専用マテリアル → 配布物の作成
 
 ## core / テスト / vrm_inspect
 
@@ -23,13 +26,33 @@ VS 2022 の場合はジェネレーター名を `"Visual Studio 17 2022"` にし
   - `--obj` で core のパイプライン(UE 空間へ変換 → リターゲット → CPU スキニング → glTF 空間へ戻す)を通した
     結果を OBJ に書き出す。`--apose 50` で腕を 50° 下げたソース姿勢をリターゲットして確認できる
 
+## 専用マテリアル(pak)
+
+```bat
+powershell -ExecutionPolicy Bypass -File ue\scripts\build_pak.ps1 [-EngineDir "C:\Program Files\Epic Games\UE_5.7"]
+```
+
+1. `ue\scripts\create_materials.py` をエディタの Python(`UnrealEditor-Cmd -run=pythonscript`)で実行し、
+   `/Game/RamenVRM/M_RVRM_{Lit,Unlit}_{Opaque,Masked,Translucent}` を生成する。
+2. `RunUAT BuildCookRun` でクックする(初回はシェーダーのコンパイルで 10 分前後かかる)。
+   `ue\RamenVRMContent\Config` にはゲームの描画設定を写してあり、シェーダーはマテリアル内に持たせる設定
+   (`bShareMaterialShaderCode=False`)。
+3. クック結果のうち `/Game/RamenVRM` の 6 個だけで IoStore コンテナ `RamenVRM_P.{pak,utoc,ucas}` を作る
+   (格納先はゲームの `../../../RealRamenSimulator/Content/`)。出力は `ue\build\paks\`。
+
+確認方法: `ue\cook.log` に `Failed to compile Material` が無いこと、クック済みの `.uexp` にシェーダー
+(`DXBC` の文字列)が含まれていること。パラメータ名は MOD 側(`mod/RamenVRM/src/vrm_character.cpp`)と合わせる。
+
 ## 配布物の作成
 
 ```bat
-powershell -ExecutionPolicy Bypass -File scripts\make_package.ps1 -Version 0.1.0
+powershell -ExecutionPolicy Bypass -File scripts\make_package.ps1 -Version 0.6.0
 ```
 
 - `dist\RamenVRM_<版>\` と `.zip` ができる。MOD 本体が無い段階では `-AllowMissingMod` で試験用に作れる。
+- MOD 本体は `build_mod\RamenVRM\Game__Shipping__Win64\main.dll`、専用マテリアルは `ue\build\paks\` から取る。
+  クラッシュ解析用のシンボル(pdb / map)は `dist\RamenVRM_<版>_symbols\` に残る(配布物には入れない)。
+- 配布物には VRM を置く `models\` フォルダ(説明のテキスト入り)が入る。
 - 同梱する UE4SS の zip は `third_party\ue4ss\` に置く(git 管理外)。SHA-256 を検証し、必要なファイルだけを
   `ue4ss_bundle\` に取り出す。詳細と取得コマンドは `third_party/ue4ss/README.md`。
 
